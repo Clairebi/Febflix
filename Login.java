@@ -8,6 +8,7 @@ public class Login{
 	public static void login() throws Exception {
 		if(isLogin==false){
 			Scanner sc = new Scanner(System.in);
+			String option = null;
 			do{
 				System.out.println("Welcome to the Febflix-------------");
 				System.out.print("Please enter your username:");
@@ -26,8 +27,11 @@ public class Login{
 		        	// e.printStackTrace();
 		        	System.err.println("Username or Password is not valid");
 		        	System.out.println("Exit or Not?[Y/N]");
+		        	option = sc.nextLine();
+		        	if(option.equalsIgnoreCase("y"))
+		        		System.exit(0);
 		        }
-			}while(sc.hasNext() && (sc.nextLine().equalsIgnoreCase("n")));
+			}while(option.equalsIgnoreCase("n"));
 		}
 	}
 }
