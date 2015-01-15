@@ -10,7 +10,10 @@ public class Login{
 			Scanner sc = new Scanner(System.in);
 			String option = null;
 			do{
+
 				System.out.println("Welcome to the Febflix-------------");
+				System.out.print("Please enter the name of database:");
+				String databaseName = sc.nextLine();
 				System.out.print("Please enter your username:");
 				String username = sc.nextLine();
 				System.out.print("Please enter your password:");
@@ -20,7 +23,7 @@ public class Login{
 					// Incorporate mySQL driver
 			        Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 			             
-		        	Utility.connection = DriverManager.getConnection("jdbc:mysql:///MovieDB", username,password);
+		        	Utility.connection = DriverManager.getConnection("jdbc:mysql:///"+databaseName, username,password);
 		        	isLogin = true;
 		        	break;
 		        }catch(SQLException e){
