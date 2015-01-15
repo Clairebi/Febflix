@@ -25,7 +25,7 @@ public class Main{
 					case "1":
 						System.out.println("Please enter a star (First Name/Last Name):");
 						String query = typeIn.nextLine();
-						Statement select = Utility.connection.createStatement();
+						Statement select = Utility.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 						String sql1 = "SELECT * FROM movies";
 						sql1 += " INNER JOIN";
 						sql1 += " (SELECT DISTINCT movie_id FROM stars_in_movies";
@@ -35,18 +35,30 @@ public class Main{
 						// sql1 += " OR stars.id="+Integer.parseInt(query);
 						sql1 += ") A";
 						sql1 += " ON movies.id=A.movie_id";
-				        ResultSet result = select.executeQuery(sql1);
 
-				        System.out.println("\nInformation of the movies featuring "+query+"-----------------");
-		                while (result.next()){
-				           System.out.println("ID = "+result.getInt("id"));
-				           System.out.println("TITLE = "+result.getString("title"));
-				           System.out.println("YEAR"+result.getInt("year"));
-				           System.out.println("DIRECTOR"+result.getString("director"));
-				           System.out.println("BANNER"+result.getString("banner_url"));
-				           System.out.println("TRAILER"+result.getString("trailer_url"));
-				           System.out.println();
-				        }
+						try{
+					        ResultSet result = select.executeQuery(sql1);
+
+					        if(result.next()){
+					        	result.beforeFirst();
+						        System.out.println("\nInformation of the movies featuring "+query+"-----------------");
+				                while (result.next()){
+						           System.out.println("ID = "+result.getInt("id"));
+						           System.out.println("TITLE = "+result.getString("title"));
+						           System.out.println("YEAR"+result.getInt("year"));
+						           System.out.println("DIRECTOR"+result.getString("director"));
+						           System.out.println("BANNER"+result.getString("banner_url"));
+						           System.out.println("TRAILER"+result.getString("trailer_url"));
+						           System.out.println();
+						        }
+					        }
+					        else{
+					        	System.out.println("No record found!");
+					        	System.out.println();
+					        }							
+						}catch(SQLException e1){
+							System.err.println("SQL Error!");
+						}
 
 						System.out.println("Press Any Key to Continue:");
 						System.in.read();
@@ -65,11 +77,16 @@ public class Main{
 						Statement insert_star = Utility.connection.createStatement();
 						String sql2 = "INSERT INTO stars(first_name,last_name,dob,photo_url) ";
 						sql2 += "VALUES('"+starFirstName+"','"+starLastName+"','"+Date.valueOf(starDateOfBirth)+"','"+starPhotoURL+"')";
-						int starRetID = insert_star.executeUpdate(sql2);
-						if(starRetID==1)
-							System.out.println("Insertion complete!");
-						else
-							System.out.println("Insertion fail!");
+						
+						try{
+							int starRetID = insert_star.executeUpdate(sql2);
+							if(starRetID==1)
+								System.out.println("Insertion complete!");
+							else
+								System.out.println("Insertion fail!");
+						}catch(SQLException e2){
+							System.err.println("SQL Error!");
+						}
 
 						System.out.println("Press Any Key to Continue:");
 						System.in.read();
@@ -92,17 +109,21 @@ public class Main{
 						Statement insert_cus = 	Utility.connection.createStatement();
 						String sql3 = "SELECT * FROM creditcards WHERE id='"+cusCC_ID+"'";
 						//Check whether credit card exist in the credit card table
-						if(insert_cus.executeQuery(sql3).next()){	//Exist
-							sql3 = "INSERT INTO customers(first_name,last_name,cc_id,address,email,password) ";
-							sql3 += "VALUES('"+cusFirstName+"','"+cusLastName+"','"+cusCC_ID+"','"+cusAddress+"','"+cusEmail+"','"+cusPassword+"')";
-							int cusRetIDIns = insert_cus.executeUpdate(sql3);
-							if(cusRetIDIns==1)
-								System.out.println("Insertion complete!");
-							else
-								System.out.println("Insertion fail!");
-						}
-						else{
-							System.out.println("The credit card ID of the customer does not exist in the bank!");
+						try{
+							if(insert_cus.executeQuery(sql3).next()){	//Exist
+								sql3 = "INSERT INTO customers(first_name,last_name,cc_id,address,email,password) ";
+								sql3 += "VALUES('"+cusFirstName+"','"+cusLastName+"','"+cusCC_ID+"','"+cusAddress+"','"+cusEmail+"','"+cusPassword+"')";
+								int cusRetIDIns = insert_cus.executeUpdate(sql3);
+								if(cusRetIDIns==1)
+									System.out.println("Insertion complete!");
+								else
+									System.out.println("Insertion fail!");
+							}
+							else{
+								System.out.println("The credit card ID of the customer does not exist in the bank!");
+							}
+						}catch(SQLException e3){
+							System.err.println("SQL Error!");
 						}
 						System.out.println("Press Any Key to Continue:");
 						System.in.read();
@@ -121,8 +142,8 @@ public class Main{
 							int cusRetIDDel = del_cus.executeUpdate(sql4);
 							if(cusRetIDDel==1)
 								System.out.println("Delete complete!");
-						}catch(SQLException e){
-							System.out.println("Delete fail! There is no such record in the table!");
+						}catch(SQLException e4){
+							System.err.println("Delete fail! There is no such record in the table!");
 						}
 
 						System.out.println("Press Any Key to Continue:");
@@ -134,14 +155,18 @@ public class Main{
 						String [] tableName = {"movies","stars","stars_in_movies","genres","genres_in_movies","creditcards","customers","sales"};
 						ResultSetMetaData [] query_metadata = new ResultSetMetaData[tableName.length];
 						
-						for(int i=0; i<tableName.length; i++){
-							String queryTable = "SELECT * FROM "+tableName[i];
-							query_metadata[i] = get_meta.executeQuery(queryTable).getMetaData();
-							System.out.println("Table Name: "+tableName[i]);
-							for(int j=1; j<=query_metadata[i].getColumnCount();j++){
-								System.out.println("Attribute: "+query_metadata[i].getColumnName(j)+", Type: "+query_metadata[i].getColumnTypeName(j));
-							}
-							System.out.println();
+						try{
+							for(int i=0; i<tableName.length; i++){
+								String queryTable = "SELECT * FROM "+tableName[i];
+								query_metadata[i] = get_meta.executeQuery(queryTable).getMetaData();
+								System.out.println("Table Name: "+tableName[i]);
+								for(int j=1; j<=query_metadata[i].getColumnCount();j++){
+									System.out.println("Attribute: "+query_metadata[i].getColumnName(j)+", Type: "+query_metadata[i].getColumnTypeName(j));
+								}
+								System.out.println();
+							}							
+						}catch(SQLException e5){
+							System.err.println("SQL Error!");
 						}
 
 						System.out.println("Press Any Key to Continue:");
@@ -149,37 +174,48 @@ public class Main{
 						break;
 
 					case "6":
-						do{
-							System.out.println("Please choose enter QUERY(1) or UPDATE(2) operation:");
-							String choice = typeIn.nextLine();
-							if(choice.equals("1") || choice.equals("query") || choice.equals("QUERY")){
-								System.out.println("Please enter the QUERY:");
-								String sqlQuery = typeIn.nextLine();
-								Statement q_statement = Utility.connection.createStatement();
-								ResultSet q_result = q_statement.executeQuery(sqlQuery);
-								ResultSetMetaData q_meta = q_result.getMetaData();
-								while(q_result.next()){
-									for(int k=1; k<=q_meta.getColumnCount(); k++){
-										System.out.println(q_meta.getColumnName(k)+"="+q_result.getString(k));
+						try{
+							do{
+								System.out.println("Please choose enter QUERY(1) or UPDATE(2) operation:");
+								String choice = typeIn.nextLine();
+								if(choice.equals("1") || choice.equals("query") || choice.equals("QUERY")){
+									System.out.println("Please enter the QUERY:");
+									String sqlQuery = typeIn.nextLine();
+									Statement q_statement = Utility.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+									ResultSet q_result = q_statement.executeQuery(sqlQuery);
+									ResultSetMetaData q_meta = q_result.getMetaData();
+									if(q_result.next()){
+										q_result.beforeFirst();
+										while(q_result.next()){
+											for(int k=1; k<=q_meta.getColumnCount(); k++){
+												System.out.println(q_meta.getColumnName(k)+"="+q_result.getString(k));
+											}
+											System.out.println();
+										}
 									}
-									System.out.println();
+									else{
+										System.out.println("No record found!");
+							        	System.out.println();
+									}
 								}
-							}
-							else if(choice.equals("2") || choice.equals("update") || choice.equals("UPDATE")){
-								System.out.println("Please enter the UPDATE:");
-								String sqlUpdate = typeIn.nextLine();
-								Statement u_statement = Utility.connection.createStatement();
-								int u_retID = u_statement.executeUpdate(sqlUpdate);
-								if(u_retID>0)
-									System.out.println("Successfully complete "+u_retID+ "record(s)");
-								else
-									System.out.println("Update fail!");
-							}
-							else{
-								System.out.println("You have enter the wrong word!");
-							}
-							System.out.println("Continue to enter another query? Y/N");
-						}while(typeIn.hasNext() && (typeIn.nextLine().equalsIgnoreCase("y")));
+								else if(choice.equals("2") || choice.equals("update") || choice.equals("UPDATE")){
+									System.out.println("Please enter the UPDATE:");
+									String sqlUpdate = typeIn.nextLine();
+									Statement u_statement = Utility.connection.createStatement();
+									int u_retID = u_statement.executeUpdate(sqlUpdate);
+									if(u_retID>0)
+										System.out.println("Successfully complete "+u_retID+ "record(s)");
+									else
+										System.out.println("Update fail!");
+								}
+								else{
+									System.out.println("You have enter the wrong word!");
+								}
+								System.out.println("Continue to enter another query? Y/N");
+							}while(typeIn.hasNext() && (typeIn.nextLine().equalsIgnoreCase("y")));
+						}catch(SQLException e6){
+							System.err.println("SQL Error!");
+						}
 
 						System.out.println("Press Any Key to Continue:");
 						System.in.read();
