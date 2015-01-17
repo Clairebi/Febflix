@@ -156,10 +156,10 @@ public class Main{
 	                while (result.next()){
 			           System.out.println("ID = "+result.getInt("id"));
 			           System.out.println("TITLE = "+result.getString("title"));
-			           System.out.println("YEAR"+result.getInt("year"));
-			           System.out.println("DIRECTOR"+result.getString("director"));
-			           System.out.println("BANNER"+result.getString("banner_url"));
-			           System.out.println("TRAILER"+result.getString("trailer_url"));
+			           System.out.println("YEAR = "+result.getInt("year"));
+			           System.out.println("DIRECTOR = "+result.getString("director"));
+			           System.out.println("BANNER = "+result.getString("banner_url"));
+			           System.out.println("TRAILER = "+result.getString("trailer_url"));
 			           System.out.println();
 			        }
 		        }
