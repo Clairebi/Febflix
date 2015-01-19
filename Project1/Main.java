@@ -251,20 +251,20 @@ public class Main{
 	 */
 	public static void deleteCustomer()throws Exception{
 		Scanner typeIn = new Scanner(System.in);
-		System.out.println("Please enter the FIRST NAME of the customer you want to delete: ");
-		String cusFirstNameDel = typeIn.nextLine();
-		System.out.println("Please enter the LAST NAME of the customer you want to delete: ");
-		String cusLastNameDel = typeIn.nextLine();
-
+		System.out.println("Please enter the ID(You may go to the 6 of Menu to find the ID of the customer)： ");
+		int deleteID = typeIn.nextInt();
 		Statement del_cus = Utility.connection.createStatement();
-		String sql4 = "DELETE FROM customers WHERE first_name='"+cusFirstNameDel+"' AND last_name='"+cusLastNameDel+"'";
+		String sql4 = "DELETE FROM customers WHERE id ='"+deleteID+"'";
 		
 		try{
 			int cusRetIDDel = del_cus.executeUpdate(sql4);
-			if(cusRetIDDel==1)
+			if(cusRetIDDel==1){
 				System.out.println("Delete complete!");
+			}else{
+				System.out.println("Delete fail! There is no such record in the table!");	
+			}
 		}catch(SQLException e4){
-			System.err.println("Delete fail! There is no such record in the table!");
+			System.err.println("SQL Error!");
 		}
 	}
 
