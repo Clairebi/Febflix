@@ -18,7 +18,7 @@
 <!-- Shell -->
 <div id="shell">
   <!-- Header -->
-  <div id="header">
+  <div id="header" >
   
 
     <h1 id="logo">
@@ -31,7 +31,7 @@
     <div id="navigation">
       <ul>
           <li><a class="active" href="#">Home</a></li>
-          <li><a href="#">Advance Search</a></li>
+          <li><a href="advance search.html">Advance Search</a></li>
           <li><a href="#">My Cart</a></li>
           <li><a href="#">Check Out</a></li>
           <li><a href="#">Log Out</a></li>
@@ -53,7 +53,7 @@
 
     <!-- start of browse by genre -->
     
-    <div id="browse">
+    <div id="browse" > <!-- style="display: none;"-->
 
       <div class ="browse-by-genre">
         <div class="head">
@@ -315,85 +315,30 @@
     </div>
   </div>
   <!-- end Header -->
+
+  <!-- Login -->
+  <div id="login">
+  <br>
+  <br>
   
-  <!-- Main -->
-  <div id="main">
-    <!-- Content -->
-    <div id="content">
-
-      <!-- Box -->
-      <div class="box">
-        <div class="head">
-          <h2>RECENT TRAILERS</h2>
-          <p class="text-right"><a href="#">See More</a></p>
-        </div>
-
-        <div class="movies-box">
-          <!-- Movie -->
-          <div class="movie">
-            <div class="movie-image">
-              <a href="#"><img src="http://a.images.blip.tv/Redlettermedia-StarWarsEpisode3ReviewPart1Of3311.jpeg" alt="movie" /></a>
-            </div>
-            <div class="info">
-              <span class="name">Star Wars: Episode III - Revenge of the Sith</span>
-              <p><b>Director : <a href="#"> George Lucas</b></a><p>
-              <p><b>Stars: <a href="#"> Natalie Portman </b></a></p>
-              <p><b>Genre: <a href="#"> Science Fiction </b></a></p>
-              <p><b>Price: $16.99 </b></p>
-              <br>
-              <a href="cart?add=Add&amp;qty=1&amp;mid=244" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('c1','','images/buttonOn.png',1)">
-              <img src="http://gateway.hopto.org:9000/fabflix/images/buttonOff.png" alt="add to cart" name="c1" width="100" height="25" border="0" id="c1"></a>           
-            </div>
-          </div>
-          <!-- end Movie -->
-          
-          <!-- Movie -->
-          <div class="movie">
-            <div class="movie-image">
-              <a href="#"><img src="http://upload.wikimedia.org/wikipedia/en/0/02/Spider-Man_2_Poster.jpg" alt="movie" /></a>
-            </div>
-            <div class="info">
-              <span class="name">SPIDER MAN 2</span>
-              <p><b>Director : <a href="#"> Sam Raimi</b></a><p>
-              <p><b>Stars: <a href="#"> Kirsten Dunst </b></a></p>
-              <p><b>Genre: <a href="#"> Action </b></a></p>
-              <p><b>Price: $16.99 </b></p>
-              <br><br>
-              <a href="cart?add=Add&amp;qty=1&amp;mid=244" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('c1','','images/buttonOn.png',1)">
-              <img src="http://gateway.hopto.org:9000/fabflix/images/buttonOff.png" alt="add to cart" name="c1" width="100" height="25" border="0" id="c1"></a>           
-            </div>
-          </div>
-          <!-- end Movie -->
-          <!-- Movie -->
-          <div class="movie">
-            <div class="movie-image">
-              <a href="#"><img src="http://ia.media-imdb.com/images/M/MV5BMTUxMzcxNzQzOF5BMl5BanBnXkFtZTcwMzQxNjUyMw@@._V1_SX640_SY720_.jpg" alt="movie" /></a>
-            </div>
-            <div class="info">
-              <span class="name"> Mr. and Mrs. Smith</span>
-              <p><b>Director : <a href="#"> Doug Liman</b></a><p>
-              <p><b>Stars: <a href="#"> Greg Ellis</a>
-                <a href="#"> Angelina Jolie</a>
-                <a href="#"> Brad Pitt</a></b>
-              </p>
-              <p><b>Genre: <a href="#"> Action </b></a></p>
-              <p><b>Price: $16.99 </b></p>
-              <br>
-              <a href="cart?add=Add&amp;qty=1&amp;mid=244" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('c1','','images/buttonOn.png',1)">
-              <img src="http://gateway.hopto.org:9000/fabflix/images/buttonOff.png" alt="add to cart" name="c1" width="100" height="25" border="0" id="c1"></a>           
-            </div>
-          </div>
-          <!-- end Movie -->
-        </div>
-        <div class="cl">&nbsp;</div>
-      </div>
-      <!-- end Box -->
+  <h1 >Please Login</h1> <br>
+  <form action="login" method="post">
+    <div class="login-row">
+      <label>Username </label> <input type="text" name="email" /> <br />
     </div>
-    <!-- end Content -->
+    <div class="login-row">
+      <label>Password </label> <input type="password" name="password" /> <br />
+    </div>
+    <div class="login-row">     
+      <input type="submit" value=" Login " class="login-button">
+    </div>
+  </form>
 
-    <div class="cl">&nbsp;</div>
+  <br>
+  <br>
+
   </div>
-  <!-- end Main -->
+  <!-- end Login -->
 
   <!-- Footer -->
   <div id="footer">
